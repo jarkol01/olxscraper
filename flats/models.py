@@ -37,11 +37,12 @@ class Category(models.Model):
         output = {}
         for obj in cls.objects.filter(search=True):
             output[obj.name] = obj.make_search()
-        payload = {
-            "head": "Nowe wyniki wyszukiwania!",
-            "body": "; ".join([f"{name}: {found}" for name, found in output.items()]),
-        }
-        send_notification(payload)
+        if output:
+            payload = {
+                "head": "Nowe wyniki wyszukiwania!",
+                "body": "; ".join([f"{name}: {found}" for name, found in output.items()]),
+            }
+            send_notification(payload)
 
     def make_search(self):
         url = self.get_url()

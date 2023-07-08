@@ -8,7 +8,7 @@ class FlatAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    fields = ["name", "price", "url", "search"]
+    fields = ["name", "price", "url", "search", "city", "distance"]
     list_display = fields
 
 
