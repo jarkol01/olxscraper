@@ -8,7 +8,7 @@ class NotificationView(TemplateView):
 
     def get_context_data(self, **kwargs):
         webpush = {"group": settings.DEFAULT_GROUP_NAME}
-        context =  super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["webpush"] = webpush
 
         return context

@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-q3_0((e*33a85#3+=pxqfw73(@^53l15i1$6znj@m64x&h@8-2"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['c2d72cfa9843-10290998949685835791.ngrok-free.app']
+ALLOWED_HOSTS = ["c2d72cfa9843-10290998949685835791.ngrok-free.app", "127.0.0.1"]
 CSRF_TRUSTED_ORIGINS = ["https://c2d72cfa9843-10290998949685835791.ngrok-free.app"]
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "webpush",
     "notifications",
     "flats",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -119,7 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = BASE_DIR / "static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -137,3 +138,4 @@ DEFAULT_GROUP_NAME = "all"
 # Celery settings
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
