@@ -2,3 +2,16 @@ venv/
 db.sqlite3
 .vscode
 .idea
+
+
+*.log
+
+*.pot
+
+*.pyc
+
+*/*/*/__pycache__/
+
+*/*/__pycache__/
+
+*/__pycache__/

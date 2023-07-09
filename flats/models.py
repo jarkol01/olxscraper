@@ -17,6 +17,10 @@ class Category(models.Model):
     price = models.PositiveSmallIntegerField(blank=True, null=True)
     search = models.BooleanField(default=True)
 
+    class Meta:
+        verbose_name = "category"
+        verbose_name_plural = "categories"
+
     def __str__(self):
         return self.name
 
@@ -37,10 +41,12 @@ class Category(models.Model):
         output = {}
         for obj in cls.objects.filter(search=True):
             output[obj.name] = obj.make_search()
-        if output:
+
+        if any(value != 0 for value in output.values()):
             payload = {
                 "head": "Nowe wyniki wyszukiwania!",
                 "body": "; ".join([f"{name}: {found}" for name, found in output.items()]),
+                "url": "https://c2d72cfa9843-10290998949685835791.ngrok-free.app/admin/flats/search/"
             }
             send_notification(payload)
 
@@ -56,7 +62,8 @@ class Category(models.Model):
             response = requests.get(url, params)
             self.search_page(response)
             params["page"] += 1
-
+        self.new_search.finished = True
+        self.new_search.save()
         return self.new_search.found
 
     def search_page(self, response):
@@ -88,6 +95,11 @@ class Search(models.Model):
         Category, on_delete=models.PROTECT, related_name="category_search"
     )
     time = models.DateTimeField(auto_now_add=True)
+    finished = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "search"
+        verbose_name_plural = "searches"
 
     @property
     def found(self):
@@ -100,6 +112,10 @@ class Flat(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     search = models.ForeignKey(Search, on_delete=models.PROTECT)
+
+    class Meta:
+        verbose_name = "flat"
+        verbose_name_plural = "flats"
 
     @property
     def get_url(self):

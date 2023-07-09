@@ -1,15 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    {% load webpush_notifications %}
-    {% webpush_header %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OlxScraper</title>
+  {% load webpush_notifications %}
+  {% webpush_header %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    .button-container {
+      margin-bottom: 20px;
+    }
+    .text-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #gif-container {
+      text-align: center;
+    }
+
+    #gif-img {
+      max-width: 100%;
+      max-height: 80vh;
+    }
+  </style>
 </head>
 <body>
-    <h1>Strona do włączenia notyfikacji</h1>
-    {% webpush_button %}
+  <div class="text-container" id="gif-container">
+    <img id="gif-img" src="" alt="Losowy GIF">
+  </div>
+  <div class="text-container">
+    <h3>OlxScraper - włącz powiadomienia lub zaloguj się</h3>
+  </div>
+  <div class="button-container">
+    {% webpush_button with_class="btn btn-secondary" %}
+  </div>
+  <div class="button-container">
+    <a href="/admin"><button class="btn btn-primary">Zaloguj się </button></a>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script>
+    function getRandomGif() {
+      var apiUrl = "https://api.giphy.com/v1/gifs/random?api_key=lRn9zNKa53fpVRhuKRzpy9HKbk2tlEEu&tag=&rating=g";
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          var gifUrl = data.data.images.original.url;
+          var gifImg = document.getElementById("gif-img");
+          gifImg.src = gifUrl;
+        })
+        .catch(error => console.log(error));
+    }
+
+    window.onload = getRandomGif;
+  </script>
 </body>
 </html>
+
