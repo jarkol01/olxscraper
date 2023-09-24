@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 from django.db import models
 import re
+from urllib.parse import urlparse
+from urllib.parse import parse_qs
 
 from notifications.tasks import send_notification
 
@@ -10,7 +12,7 @@ class Category(models.Model):
     name = models.CharField(max_length=255)
     url = models.CharField(
         max_length=500,
-        help_text="Should contain not params, only URL, example: https://www.olx.pl/nieruchomosci/stancje-pokoje/",
+        help_text="Enter an OLX url with parameters you want to search, price and distance parameters will be overriden if specified. Localization should be replaced with {}. Ex. https://www.olx.pl/elektronika/telefony/smartfony-telefony-komorkowe/{}/?search%5Bfilter_enum_phonemodel%5D%5B0%5D=iphone-14-pro-max&search%5Bfilter_enum_phonemodel%5D%5B1%5D=iphone-14-pro",
     )
     city = models.CharField(max_length=255, default="krakow")
     distance = models.PositiveSmallIntegerField(blank=True, null=True)
@@ -25,7 +27,7 @@ class Category(models.Model):
         return self.name
 
     def get_url_params(self):
-        params = {}
+        params = parse_qs(urlparse(self.url).query)
         if self.distance:
             params["search[dist]"] = self.distance
         if self.price:
@@ -34,7 +36,7 @@ class Category(models.Model):
         return params
 
     def get_url(self):
-        return f"{self.url}{self.city}/"
+        return self.url.split("{}")[0] + self.city + "/"
 
     @classmethod
     def search_all(cls):
@@ -71,14 +73,18 @@ class Category(models.Model):
         offers = soup.find_all("a", class_="css-rc5s2u")
         print(f"Found {len(offers)} offers")
         for offer in offers:
+            try:
+                price = int(re.sub("\D", "", offer.find("p", class_="css-10b0gli").text))
+            except ValueError:
+                print(f'Error while parsing price {offer.find("p", class_="css-10b0gli").text}')
+                price = 0
+
             offer_data = {
                 "title": offer.find("h6", class_="css-16v5mdi").text,
                 "url": "https://www.olx.pl" + offer["href"]
                 if offer["href"].startswith("/d/")
                 else offer["href"],
-                "price": int(
-                    re.sub("\D", "", offer.find("p", class_="css-10b0gli").text)
-                ),
+                "price": price,
                 "category": self,
                 "search": self.new_search,
             }
@@ -108,7 +114,7 @@ class Search(models.Model):
 
 class Flat(models.Model):
     title = models.CharField(max_length=255)
-    url = models.URLField(max_length=150)
+    url = models.URLField(max_length=255)
     price = models.DecimalField(max_digits=8, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     search = models.ForeignKey(Search, on_delete=models.PROTECT)
