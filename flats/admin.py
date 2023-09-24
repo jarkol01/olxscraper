@@ -1,3 +1,4 @@
+from django.utils.html import format_html
 from django.contrib import admin
 from flats.models import Flat, Category, Search
 
@@ -14,12 +15,17 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class FlatInline(admin.TabularInline):
     model = Flat
-    readonly_fields = ["title", "url", "price", "category"]
+    fields = ["title", "price", "show_url"]
+    readonly_fields = fields
     show_change_link = True
+    can_delete = False
+
+    def show_url(self, obj):
+        return format_html("<a href='{url}'>{url}</a>", url=obj.url)
 
 
 class SearchAdmin(admin.ModelAdmin):
-    fields = ["category", "time", "found"]
+    fields = ["category", "time", "found", "finished"]
     list_display = fields
     readonly_fields = fields
     inlines = [FlatInline]
