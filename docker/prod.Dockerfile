@@ -1,7 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG PYTHON_VERSION=3.11.9
-FROM python:${PYTHON_VERSION} AS base
+FROM python:3.11.9-alpine3.20 AS base
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -9,7 +8,6 @@ ENV DJANGO_SETTINGS_MODULE=olxscraper.settings.prod
 
 WORKDIR /app
 
-RUN python -m pip install --upgrade pip
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements,target=requirements \

@@ -4,3 +4,18 @@ services:
     env_file: .env.prod
     ports:
       - "80:8000"
+  rabbitmq:
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"
+    env_file: .env.prod
+  celery_worker:
+    image: jkoldun/olxscraper:latest
+    command: /start-celeryworker
+    volumes:
+      - .:/app
+    env_file:
+      - ./.env/.dev-sample
+    depends_on:
+      - redis
+      - db
