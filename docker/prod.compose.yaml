@@ -1,0 +1,6 @@
+services:
+  server:
+    image: jkoldun/olxscraper:latest
+    env_file: .env.prod
+    ports:
+      - "80:8000"

@@ -12,7 +12,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "0.0.0.0"]
 CSRF_TRUSTED_ORIGINS = []
 
 # Application definition
@@ -113,6 +113,29 @@ STATIC_ROOT = BASE_DIR / "static"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": "/tmp/debug.log",
+        },
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file", "console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}
 
 WEBPUSH_SETTINGS = {
     "VAPID_PUBLIC_KEY": "BMkP-MK9nZ7Nexef-4O_xF5mSJsHJ1XXCKW_VFQZNCMvrgFkV9BQDktZSYRdg9TgTRzJRVPi4skKMWtopBOPQJ4",
