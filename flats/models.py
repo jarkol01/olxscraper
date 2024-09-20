@@ -47,8 +47,10 @@ class Category(models.Model):
         if any(value != 0 for value in output.values()):
             payload = {
                 "head": "Nowe wyniki wyszukiwania!",
-                "body": "; ".join([f"{name}: {found}" for name, found in output.items()]),
-                "url": "https://c2d72cfa9843-10290998949685835791.ngrok-free.app/admin/flats/search/"
+                "body": "; ".join(
+                    [f"{name}: {found}" for name, found in output.items()]
+                ),
+                "url": "https://c2d72cfa9843-10290998949685835791.ngrok-free.app/admin/flats/search/",
             }
             send_notification(payload)
 
@@ -74,9 +76,13 @@ class Category(models.Model):
         print(f"Found {len(offers)} offers")
         for offer in offers:
             try:
-                price = int(re.sub("\D", "", offer.find("p", class_="css-10b0gli").text))
+                price = int(
+                    re.sub(r"\D", "", offer.find("p", class_="css-10b0gli").text)
+                )
             except ValueError:
-                print(f'Error while parsing price {offer.find("p", class_="css-10b0gli").text}')
+                print(
+                    f'Error while parsing price {offer.find("p", class_="css-10b0gli").text}'
+                )
                 price = 0
 
             offer_data = {
