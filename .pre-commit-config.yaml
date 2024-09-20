@@ -42,15 +42,8 @@ repos:
         require_serial: true
   - repo: local
     hooks:
-      - id: pip-tools
+      - id: lock-requirements
         language: system
-        name: pip-compile requirements
-        entry: make dependencies
-        stages: [ commit ]
-  - repo: local
-    hooks:
-      - id: mypy
-        language: system
-        name: Run mypy
-        entry: make mypy
+        name: Lock requirements
+        entry: make lock
         stages: [ commit ]
