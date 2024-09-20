@@ -12,5 +12,6 @@ dependencies = [
     "django-webpush>=0.3.6",
     "django>=5.1.1",
     "pre-commit>=3.8.0",
+    "python-dotenv>=1.0.1",
     "requests>=2.32.3",
 ]
