@@ -1,0 +1,56 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-yaml
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.6
+    hooks:
+      - id: ruff
+        args: [ --fix ]
+      - id: ruff-format
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.17.0
+    hooks:
+      - id: pyupgrade
+        args: [ --py310-plus ]
+  - repo: https://github.com/adamchainz/django-upgrade
+    rev: 1.21.0
+    hooks:
+      - id: django-upgrade
+        language_version: python3.10
+        args: [ --target-version, "5.1" ]
+  - repo: local
+    hooks:
+      - id: migrations-check
+        language: system
+        name: Check for uncreated migrations
+        entry: make managepy arguments="makemigrations --check --dry-run"
+        files: "models\\.py$"
+        stages: [ commit ]
+        require_serial: true
+  - repo: local
+    hooks:
+      - id: messages-check
+        language: system
+        name: Compile the messages
+        entry: make managepy arguments="compilemessages -l pl"
+        files: ".+\\.po$"
+        stages: [ commit ]
+        require_serial: true
+  - repo: local
+    hooks:
+      - id: pip-tools
+        language: system
+        name: pip-compile requirements
+        entry: make dependencies
+        stages: [ commit ]
+  - repo: local
+    hooks:
+      - id: mypy
+        language: system
+        name: Run mypy
+        entry: make mypy
+        stages: [ commit ]
