@@ -15,8 +15,4 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 COPY .. .
 
-RUN python manage.py collectstatic --noinput
-
-EXPOSE 8000
-
-CMD ["gunicorn", "olxscraper.wsgi:application", "--bind", "0.0.0.0:8000"]
+RUN chmod +x ./docker/entrypoints/server-entrypoint.sh ./docker/entrypoints/worker-entrypoint.sh ./docker/entrypoints/beat-entrypoint.sh

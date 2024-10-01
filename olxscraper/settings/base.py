@@ -1,4 +1,5 @@
 import os
+from os import environ
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -146,6 +147,7 @@ WEBPUSH_SETTINGS = {
 DEFAULT_GROUP_NAME = "all"
 
 # Celery settings
-CELERY_BROKER_URL = "redis://localhost:6379"
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+CELERY_BROKER_URL = environ.get(
+    "CELERY_BROKER_URL", "amqp://guest:guest@rabbitmq:5672/vhost"
+)

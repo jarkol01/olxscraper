@@ -111,6 +111,8 @@ pywebpush==2.0.0
     # via django-webpush
 pyyaml==6.0.2
     # via pre-commit
+redis==5.1.0
+    # via olxscraper (pyproject.toml)
 requests==2.32.3
     # via
     #   olxscraper (pyproject.toml)
