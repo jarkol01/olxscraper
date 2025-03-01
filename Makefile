@@ -1,18 +1,24 @@
 # Local development
-up:
-	docker-compose up -d
-
 stop:
-	docker-compose stop
+	docker compose stop
 
 down:
-	docker-compose down --remove-orphans
+	docker compose down
 
-rm: stop
-	docker-compose rm -f
+up:
+	docker compose up -d
 
-removevolumes: stop
-	docker-compose down -v
+restart:
+	docker compose restart
+
+logs:
+	docker compose logs server --follow
+
+shell:
+	docker compose exec -it server sh
+
+shell_plus:
+	docker compose exec -it server python manage.py shell_plus
 
 # Utilities
 lock:

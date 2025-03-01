@@ -133,7 +133,17 @@ LOGGING = {
         "django": {
             "handlers": ["file", "console"],
             "level": "DEBUG",
-            "propagate": True,
+            "propagate": False,
+        },
+        "django.db.backends": {
+            "handlers": ["file", "console"],
+            "level": "WARNING",  # DEBUG will log all queries, so change it to WARNING.
+            "propagate": False,  # Don't propagate to other handlers
+        },
+        "django.utils.autoreload": {
+            "handlers": ["file", "console"],
+            "level": "INFO",
+            "propagate": False,
         },
     },
 }

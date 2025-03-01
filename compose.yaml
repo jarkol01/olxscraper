@@ -1,0 +1,41 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: python manage.py runserver
+    env_file: .env
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+  rabbitmq:
+    image: rabbitmq:latest
+    ports:
+      - "15672:15672"
+    env_file: .env
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  worker:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    entrypoint: ./docker/entrypoints/worker-entrypoint.sh
+    env_file: .env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  beat:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    entrypoint: ./docker/entrypoints/beat-entrypoint.sh
+    env_file: .env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
