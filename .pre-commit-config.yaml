@@ -40,10 +40,3 @@ repos:
         files: ".+\\.po$"
         stages: [ commit ]
         require_serial: true
-  - repo: local
-    hooks:
-      - id: lock-requirements
-        language: system
-        name: Lock requirements
-        entry: make lock
-        stages: [ commit ]

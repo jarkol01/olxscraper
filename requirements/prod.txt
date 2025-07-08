@@ -100,6 +100,8 @@ pre-commit==3.8.0
     # via olxscraper (pyproject.toml)
 prompt-toolkit==3.0.47
     # via click-repl
+psycopg2-binary==2.9.10
+    # via olxscraper (pyproject.toml)
 py-vapid==1.9.1
     # via pywebpush
 pycparser==2.22

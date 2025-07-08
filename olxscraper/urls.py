@@ -17,12 +17,11 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from webpush import urls as webpush_urls
 
 from notifications.views import NotificationView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", NotificationView.as_view()),
-    path("webpush/", include(webpush_urls)),
+    path("webpush/", include("webpush.urls")),
 ]

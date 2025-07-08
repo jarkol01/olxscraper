@@ -1,18 +1,20 @@
-# syntax=docker/dockerfile:1
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim AS builder
+ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
 
-FROM python:3.11.9-alpine3.20 AS base
-
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-ENV DJANGO_SETTINGS_MODULE=olxscraper.settings.dev
+ENV UV_PYTHON_DOWNLOADS=0
 
 WORKDIR /app
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project --no-dev
+ADD . /app
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev
 
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    --mount=type=bind,source=requirements,target=requirements \
-    python -m pip install --no-cache-dir -r requirements/dev.txt
+FROM python:3.13-slim-bookworm
 
-COPY .. .
+COPY --from=builder --chown=app:app /app /app
 
-RUN chmod +x ./docker/entrypoints/server-entrypoint.sh ./docker/entrypoints/worker-entrypoint.sh ./docker/entrypoints/beat-entrypoint.sh
+ENV PATH="/app/.venv/bin:$PATH"
