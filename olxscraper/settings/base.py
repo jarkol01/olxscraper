@@ -112,7 +112,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "static"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -153,9 +153,9 @@ LOGGING = {
 }
 
 WEBPUSH_SETTINGS = {
-    "VAPID_PUBLIC_KEY": "BMkP-MK9nZ7Nexef-4O_xF5mSJsHJ1XXCKW_VFQZNCMvrgFkV9BQDktZSYRdg9TgTRzJRVPi4skKMWtopBOPQJ4",
-    "VAPID_PRIVATE_KEY": "O58jrQnYA61uGnUz7q0KeYVuf-cTYpEZfcWYHdehhwM",
-    "VAPID_ADMIN_EMAIL": "jkoldun@gmail.com",
+    "VAPID_PUBLIC_KEY": os.getenv("VAPID_PUBLIC_KEY"),
+    "VAPID_PRIVATE_KEY": os.getenv("VAPID_PRIVATE_KEY"),
+    "VAPID_ADMIN_EMAIL": os.getenv("VAPID_ADMIN_EMAIL"),
 }
 
 DEFAULT_GROUP_NAME = "all"

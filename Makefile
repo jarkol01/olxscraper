@@ -12,25 +12,21 @@ restart:
 	docker compose restart
 
 logs:
-	docker compose logs server --follow
+	docker compose logs web --follow
 
 shell:
-	docker compose exec -it server sh
+	docker compose exec -it web bash
 
 shell_plus:
-	docker compose exec -it server python manage.py shell_plus
+	docker compose exec -it web python manage.py shell_plus
 
 # Utilities
-lock:
-	uv pip compile pyproject.toml requirements/dev.in -o requirements/dev.txt && \
-	uv pip compile pyproject.toml requirements/prod.in -o requirements/prod.txt
-
 managepy:
 	python manage.py $(arguments)
 
 # Deployment
 prod_build:
-	docker build -t olxscraper -f docker/prod.Dockerfile .
+	docker build -t olxscraper -f deployment/prod.Dockerfile .
 
 prod_tag:
 	docker tag olxscraper jkoldun/olxscraper:latest
@@ -38,4 +34,11 @@ prod_tag:
 prod_push:
 	docker push jkoldun/olxscraper:latest
 
-deploy: prod_build prod_tag prod_push
+prod_sync:
+	rsync -av deployment/prod.compose.yaml jarek@34.116.254.111:/home/jarek/compose.yml
+	rsync -av deployment/.env jarek@34.116.254.111:/home/jarek/.env
+
+prod_restart:
+	ssh jarek@34.116.254.111 "docker compose up --pull always -d"
+
+deploy: prod_build prod_tag prod_push prod_sync prod_restart

@@ -17,6 +17,10 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from django.views.static import serve
+from django.conf import settings
+from django.conf.urls.static import static
+import os
 
 from notifications.views import NotificationView
 
@@ -24,4 +28,16 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", NotificationView.as_view()),
     path("webpush/", include("webpush.urls")),
+    path(
+        "serviceworker.js",
+        serve,
+        {
+            "document_root": os.path.join(settings.BASE_DIR, "static"),
+            "path": "serviceworker.js",
+        },
+    ),
 ]
+
+# Serve static files during development
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

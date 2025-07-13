@@ -3,7 +3,7 @@ name = "olxscraper"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12, <3.13"
 dependencies = [
     "beautifulsoup4>=4.12.3",
     "celery>=5.4.0",
@@ -17,4 +17,6 @@ dependencies = [
     "redis>=5.1.0",
     "django-cors-headers>=4.7.0",
     "psycopg2-binary>=2.9.10",
+    "uvicorn>=0.35.0",
+    "whitenoise>=6.9.0"
 ]

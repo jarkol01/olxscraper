@@ -1,22 +1,41 @@
 x-default: &default
-  build: .
-  env_file:
-    - .env
-  volumes:
-    - .:/app
-    - .venv:/app/.venv
+  env_file: .env
+  image: jkoldun/olxscraper:latest
 
 services:
+
   web:
     <<: *default
-    command: uv run python manage.py runserver 0.0.0.0:8000
+    command: uvicorn olxscraper.asgi:application --host 0.0.0.0 --port 8000
     ports:
-      - "8000:8000"
+      - "80:8000"
+    volumes:
+      - staticfiles:/app/staticfiles
     depends_on:
       db:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+      migration:
+        condition: service_completed_successfully
+
+  migration:
+    <<: *default
+    command: python manage.py migrate
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  static:
+    <<: *default
+    command: python manage.py collectstatic --noinput
+    volumes:
+      - staticfiles:/app/staticfiles
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
 
   db:
     image: postgres:17-alpine
@@ -29,8 +48,6 @@ services:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_NAME:-postgres}"]
       interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 10s
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -53,6 +70,8 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+      migration:
+        condition: service_completed_successfully
 
   beat:
     <<: *default
@@ -62,6 +81,9 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+      migration:
+        condition: service_completed_successfully
 
 volumes:
   pgdata:
+  staticfiles:
