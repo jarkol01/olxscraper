@@ -81,7 +81,7 @@ class Category(models.Model):
                 )
             except ValueError:
                 print(
-                    f'Error while parsing price {offer.find("p", class_="css-10b0gli").text}'
+                    f"Error while parsing price {offer.find('p', class_='css-10b0gli').text}"
                 )
                 price = 0
 

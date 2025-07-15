@@ -29,7 +29,7 @@ repos:
         name: Check for uncreated migrations
         entry: make managepy arguments="makemigrations --check --dry-run"
         files: "models\\.py$"
-        stages: [ commit ]
+        stages: [ pre-commit ]
         require_serial: true
   - repo: local
     hooks:
@@ -38,5 +38,5 @@ repos:
         name: Compile the messages
         entry: make managepy arguments="compilemessages -l pl"
         files: ".+\\.po$"
-        stages: [ commit ]
+        stages: [ pre-commit ]
         require_serial: true

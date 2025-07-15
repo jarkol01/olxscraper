@@ -1,6 +1,6 @@
 koldun.pl {
     reverse_proxy web:8000
-    
+
     header {
         Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
         X-Content-Type-Options "nosniff"
@@ -8,9 +8,9 @@ koldun.pl {
         X-XSS-Protection "1; mode=block"
         Referrer-Policy "strict-origin-when-cross-origin"
     }
-    
+
     encode gzip
-    
+
     log {
         output file /var/log/caddy/access.log
     }
@@ -18,4 +18,4 @@ koldun.pl {
 
 www.koldun.pl {
     redir https://koldun.pl{uri} permanent
-} 
+}
