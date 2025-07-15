@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "notifications",
     "flats",
     "django_celery_beat",
+    "pwa",
 ]
 
 MIDDLEWARE = [

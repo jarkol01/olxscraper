@@ -28,6 +28,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", NotificationView.as_view()),
     path("webpush/", include("webpush.urls")),
+    path("", include("pwa.urls")),
     path(
         "serviceworker.js",
         serve,
