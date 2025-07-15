@@ -4,11 +4,25 @@ x-default: &default
 
 services:
 
+  caddy:
+    image: caddy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+      - caddy_logs:/var/log/caddy
+    depends_on:
+      - web
+    restart: unless-stopped
+
   web:
     <<: *default
     command: uvicorn olxscraper.asgi:application --host 0.0.0.0 --port 8000
-    ports:
-      - "80:8000"
+    expose:
+      - "8000"
     volumes:
       - staticfiles:/app/staticfiles
     depends_on:
@@ -87,3 +101,6 @@ services:
 volumes:
   pgdata:
   staticfiles:
+  caddy_data:
+  caddy_config:
+  caddy_logs:

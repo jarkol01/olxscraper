@@ -1,7 +1,7 @@
 from .base import *  # noqa: F403
 
 # Add your domain here once you have one
-ALLOWED_HOSTS = ["34.116.254.111", "yourdomain.com", "www.yourdomain.com"]
+ALLOWED_HOSTS = ["34.116.254.111", "koldun.pl"]
 
 MIDDLEWARE.insert(2, "whitenoise.middleware.WhiteNoiseMiddleware")  # noqa: F405
 
@@ -28,6 +28,6 @@ X_FRAME_OPTIONS = "DENY"
 
 # Update CSRF_TRUSTED_ORIGINS for HTTPS
 CSRF_TRUSTED_ORIGINS = [
-    "https://yourdomain.com",
-    "https://www.yourdomain.com",
+    "https://koldun.pl",
+    "https://www.koldun.pl",
 ]

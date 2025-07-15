@@ -37,6 +37,7 @@ prod_push:
 prod_sync:
 	rsync -av deployment/prod.compose.yaml jarek@34.116.254.111:/home/jarek/compose.yml
 	rsync -av deployment/.env jarek@34.116.254.111:/home/jarek/.env
+	rsync -av deployment/Caddyfile jarek@34.116.254.111:/home/jarek/Caddyfile
 
 prod_restart:
 	ssh jarek@34.116.254.111 "docker compose up --pull always -d"
