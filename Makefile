@@ -14,7 +14,7 @@ restart:
 logs:
 	docker compose logs web --follow
 
-shell:
+bash:
 	docker compose exec -it web bash
 
 shell_plus:

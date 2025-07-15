@@ -1,6 +1,6 @@
 from django.utils.html import format_html
 from django.contrib import admin
-from flats.models import Flat, Category, Search
+from olxscraper.flats.models import Flat, Category, Search
 
 
 @admin.register(Flat)

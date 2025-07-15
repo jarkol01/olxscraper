@@ -1,6 +1,6 @@
 from celery import shared_task
 
-from flats.models import Category
+from olxscraper.flats.models import Category
 
 
 @shared_task

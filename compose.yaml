@@ -47,7 +47,7 @@ services:
 
   worker:
     <<: *default
-    command: celery -A olxscraper worker -l INFO
+    command: celery -A config worker -l INFO
     depends_on:
       db:
         condition: service_healthy
@@ -56,7 +56,7 @@ services:
 
   beat:
     <<: *default
-    command: celery -A olxscraper beat -l INFO
+    command: celery -A config beat -l INFO
     depends_on:
       db:
         condition: service_healthy

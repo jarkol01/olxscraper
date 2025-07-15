@@ -20,7 +20,7 @@ services:
 
   web:
     <<: *default
-    command: uvicorn olxscraper.asgi:application --host 0.0.0.0 --port 8000
+    command: uvicorn config.asgi:application --host 0.0.0.0 --port 8000
     expose:
       - "8000"
     volumes:
@@ -78,7 +78,7 @@ services:
 
   worker:
     <<: *default
-    command: celery -A olxscraper worker -l INFO
+    command: celery -A config worker -l INFO
     depends_on:
       db:
         condition: service_healthy
@@ -89,7 +89,7 @@ services:
 
   beat:
     <<: *default
-    command: celery -A olxscraper beat -l INFO
+    command: celery -A config beat -l INFO
     depends_on:
       db:
         condition: service_healthy

@@ -5,7 +5,7 @@ import re
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
 
-from notifications.tasks import send_notification
+from olxscraper.notifications.tasks import send_notification
 
 
 class Category(models.Model):

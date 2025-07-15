@@ -22,7 +22,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 import os
 
-from notifications.views import NotificationView
+from olxscraper.notifications.views import NotificationView
 
 urlpatterns = [
     path("admin/", admin.site.urls),

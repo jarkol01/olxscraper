@@ -18,7 +18,9 @@ CSRF_TRUSTED_ORIGINS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+PROJECT_NAME = "olxscraper"
+
+BASE_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -26,12 +28,21 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
+]
+
+THIRD_PARTY_APPS = [
     "webpush",
-    "notifications",
-    "flats",
     "django_celery_beat",
     "pwa",
 ]
+
+LOCAL_APPS = [
+    "notifications",
+    "flats",
+]
+LOCAL_APPS = [f"{PROJECT_NAME}.{app}" for app in LOCAL_APPS]
+
+INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -43,12 +54,12 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "olxscraper.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [BASE_DIR / PROJECT_NAME / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -61,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "olxscraper.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Database
