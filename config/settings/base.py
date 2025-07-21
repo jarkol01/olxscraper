@@ -37,8 +37,8 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
+    "searches",
     "notifications",
-    "flats",
 ]
 LOCAL_APPS = [f"{PROJECT_NAME}.{app}" for app in LOCAL_APPS]
 

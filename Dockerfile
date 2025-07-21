@@ -5,6 +5,8 @@ WORKDIR /app
 
 COPY . .
 
+RUN python -m venv --copies .venv
+
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --dev
 

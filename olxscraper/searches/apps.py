@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class FlatsConfig(AppConfig):
+class SearchesConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "olxscraper.flats"
+    name = "olxscraper.searches"
