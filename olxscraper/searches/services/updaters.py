@@ -47,9 +47,11 @@ class ItemUpdater:
         """
         Creates an update entry and overwrites the old item with the new item data.
         """
-        changes = self._build_update_changes(old_item, new_item)
-        self._create_update_entry(new_item, changes)
         self._overwrite_item(old_item, new_item)
+
+        changes = self._build_update_changes(old_item, new_item)
+        if changes:
+            self._create_update_entry(old_item, changes)
 
         return old_item
 
@@ -67,4 +69,6 @@ class ItemUpdater:
         else:
             item = self._create_item(self.item)
 
-        SearchResult.objects.create(search=self.search, item=item)
+        SearchResult.objects.create(
+            search=self.search, item=item, was_found=not bool(existing_item)
+        )

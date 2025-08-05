@@ -1,10 +1,10 @@
 from decimal import Decimal
+import re
 import aiohttp
 import asyncio
 from bs4 import BeautifulSoup
 from logging import getLogger
-from olxscraper.searches.models import Address, Item, Search
-from olxscraper.searches.services.updaters import ItemUpdater
+from olxscraper.searches.models import Address, Item
 
 logger = getLogger(__name__)
 
@@ -17,7 +17,6 @@ class ResearchFirstSearcher:
 
     def __init__(self, address: Address):
         self.address = address
-        self.search = None
 
     def _get_page_urls(self, page_number: int) -> str:
         """
@@ -62,22 +61,15 @@ class ResearchFirstSearcher:
         items = []
         for html in htmls:
             items += [*self._parse_items(html)]
+        return items
 
-        for item in items:
-            ItemUpdater(item, self.search).run()
-
-    def run(self) -> None:
-        print(f"Starting search for {self.address.name}")
-        self.search = Search.objects.create(address=self.address)
-
+    def run(self) -> list[Item]:
         pages_count = asyncio.run(self._search_first_page())
+
         print(f"Found {pages_count} pages to search")
 
-        asyncio.run(self._search_rest_of_pages(pages_count))
-
-        print(f"Search for {self.address.name} finished")
-        self.search.is_finished = True
-        self.search.save()
+        items = asyncio.run(self._search_rest_of_pages(pages_count))
+        return items
 
 
 class OlxSearcher(ResearchFirstSearcher):
@@ -114,13 +106,14 @@ class OlxSearcher(ResearchFirstSearcher):
         Parses the item and returns the item.
         """
         return Item(
-            url=self._parse_item_url(item),
+            url=self._ensure_absolute_url(self._parse_item_url(item)),
             title=self._parse_item_title(item),
             price=self._parse_item_price(item),
-            currency=self._parse_item_currency(item),
+            currency="PLN",
         )
 
-    def _parse_item_url(self, item: BeautifulSoup) -> str:
+    @staticmethod
+    def _parse_item_url(item: BeautifulSoup) -> str:
         """
         Parses the item URL and returns the URL.
         """
@@ -128,7 +121,8 @@ class OlxSearcher(ResearchFirstSearcher):
         item_listing_link = item_listing.find("a")
         return item_listing_link["href"]
 
-    def _parse_item_title(self, item: BeautifulSoup) -> str:
+    @staticmethod
+    def _parse_item_title(item: BeautifulSoup) -> str:
         """
         Parses the item title and returns the title.
         """
@@ -137,16 +131,21 @@ class OlxSearcher(ResearchFirstSearcher):
         item_listing_heading = item_listing_link.find("h4")
         return item_listing_heading.text.strip()
 
-    def _parse_item_price(self, item: BeautifulSoup) -> Decimal:
+    @staticmethod
+    def _parse_item_price(item: BeautifulSoup) -> Decimal:
         """
         Parses the item price and returns the price.
         """
         item_listing_price = item.find("p", attrs={"data-testid": "ad-price"})
-        return Decimal(item_listing_price.text.strip().rsplit(" ", 1)[0])
+        price_text = item_listing_price.text.strip()
+        match = re.search(r"\d{1,3}(?:[ ]\d{3})*", price_text)
+        return Decimal(match.group(0).replace(" ", "").strip())
 
-    def _parse_item_currency(self, item: BeautifulSoup) -> str:
+    @staticmethod
+    def _ensure_absolute_url(url: str) -> str:
         """
-        Parses the item currency and returns the currency.
+        Ensures the URL is absolute.
         """
-        item_listing_price = item.find("p", attrs={"data-testid": "ad-price"})
-        return item_listing_price.text.strip().rsplit(" ", 1)[1]
+        if url.startswith("/"):
+            return f"https://www.olx.pl{url}"
+        return url

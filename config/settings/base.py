@@ -113,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Warsaw"
 
 USE_I18N = True
 
@@ -125,6 +125,9 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -177,3 +180,53 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 CELERY_BROKER_URL = environ.get(
     "CELERY_BROKER_URL", "amqp://guest:guest@rabbitmq:5672/vhost"
 )
+
+# PWA settings
+PWA_APP_NAME = "OlxScraper"
+PWA_APP_DESCRIPTION = "Monitor OLX listings and get notifications for new items matching your search criteria"
+PWA_APP_THEME_COLOR = "#007bff"
+PWA_APP_BACKGROUND_COLOR = "#ffffff"
+PWA_APP_DISPLAY = "standalone"
+PWA_APP_SCOPE = "/"
+PWA_APP_ORIENTATION = "portrait-primary"
+PWA_APP_START_URL = "/"
+PWA_APP_STATUS_BAR_COLOR = "default"
+PWA_APP_ICONS = [
+    {
+        "src": "/static/images/logo.png",
+        "sizes": "512x512",
+        "type": "image/png",
+    },
+    {
+        "src": "/static/images/icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+    },
+    {
+        "src": "/static/images/icon-96x96.png",
+        "sizes": "96x96",
+        "type": "image/png",
+    },
+]
+PWA_APP_ICONS_APPLE = [
+    {
+        "src": "/static/images/apple-touch-icon.png",
+        "sizes": "180x180",
+        "type": "image/png",
+    }
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        "src": "/static/images/splash-640x1136.png",
+        "media": "(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)",
+    }
+]
+PWA_APP_DIR = "ltr"
+PWA_APP_LANG = "pl-PL"
+PWA_APP_SHORTCUTS = [
+    {
+        "name": "Admin Panel",
+        "url": "/admin/",
+        "description": "Access the administration panel",
+    }
+]
