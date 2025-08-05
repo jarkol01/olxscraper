@@ -21,12 +21,9 @@ class AddressInline(admin.TabularInline):
     )
     fields = ("name", "show_link")
 
-    @admin.display(
-        description="Link"
-    )
+    @admin.display(description="Link")
     def show_link(self, obj):
         return mark_safe(f"<a href='{obj.url}'>Link</a>")
-
 
 
 @admin.register(Category)
@@ -39,7 +36,7 @@ class SearchInline(admin.TabularInline):
     model = Search
     extra = 0
     show_change_link = True
-    readonly_fields = ("is_finished",)
+    readonly_fields = ("is_finished", "items_found_count")
 
 
 @admin.register(Address)

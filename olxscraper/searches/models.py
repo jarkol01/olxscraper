@@ -78,6 +78,10 @@ class Search(TimeStampedModel):
     def __str__(self):
         return pretty_datetime(self.created)
 
+    @property
+    def items_found_count(self):
+        return self.searchresult_set.filter(was_found=True).count()
+
 
 class SearchResult(TimeStampedModel):
     search = models.ForeignKey(
