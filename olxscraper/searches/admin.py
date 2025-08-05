@@ -49,13 +49,15 @@ class SearchResultInline(admin.TabularInline):
     model = SearchResult
     extra = 0
     show_change_link = True
-    readonly_fields = (
-        "item",
-        "was_found",
-    )
+    fields = ("item_link",)
+    readonly_fields = ("item_link",)
 
     def get_queryset(self, request):
         return super().get_queryset(request).filter(was_found=True)
+
+    @admin.display(description="Item")
+    def item_link(self, obj):
+        return mark_safe(f"<a href='{obj.item.url}'>{obj.item}</a>")
 
 
 @admin.register(Search)
