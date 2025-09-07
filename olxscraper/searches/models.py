@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
 from django_celery_beat.models import IntervalSchedule, PeriodicTask
+from olxscraper.searches.constants import WebsiteChoices
 from olxscraper.utils.datetime import pretty_datetime
 
 
@@ -24,6 +25,8 @@ class Category(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
         PeriodicTask.objects.update_or_create(
             task="olxscraper.searches.tasks.search_category",
             args=[self.id],
@@ -32,7 +35,6 @@ class Category(models.Model):
                 "interval": self.search_frequency,
             },
         )
-        super().save(*args, **kwargs)
 
 
 class Address(models.Model):
@@ -45,6 +47,11 @@ class Address(models.Model):
         help_text=_(
             "Should describe the address of the category, e.g. 'Mobile phones up to $1000'"
         ),
+    )
+    website = models.CharField(
+        max_length=255,
+        choices=WebsiteChoices.choices,
+        help_text=_("Which website you want to search"),
     )
     url = models.URLField(
         max_length=2048,

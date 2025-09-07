@@ -2,14 +2,25 @@ from celery import shared_task
 from django.urls import reverse
 
 from olxscraper.notifications.tasks import send_notification
+from olxscraper.searches.constants import WebsiteChoices
 from olxscraper.searches.models import Address, Category, Search
-from olxscraper.searches.services.searchers import OlxSearcher
+from olxscraper.searches.services.searchers import (
+    KleinanzeigenSearcher,
+    OlxSearcher,
+    OtomotoSearcher,
+)
 from olxscraper.searches.services.updaters import ItemUpdater
 
 
 def perform_search(address: Address, search: Search):
-    items = OlxSearcher(address).run()
+    website_to_searcher_map = {
+        WebsiteChoices.OLX: OlxSearcher,
+        WebsiteChoices.KLEINANZEIGEN: KleinanzeigenSearcher,
+        WebsiteChoices.OTOMOTO: OtomotoSearcher,
+    }
 
+    searcher_class = website_to_searcher_map.get(address.website)
+    items = searcher_class(address).run()
     for item in items:
         ItemUpdater(item, search).run()
 
