@@ -25,7 +25,7 @@
 
     <!-- Quick Stats Row -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border dark:border-gray-700 stat-card">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md border dark:border-gray-700 stat-card">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
                     <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center status-online">
@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border dark:border-gray-700 stat-card">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md border dark:border-gray-700 stat-card">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
                     <div class="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
@@ -53,7 +53,7 @@
             </div>
         </div>
 
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border dark:border-gray-700 stat-card">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md border dark:border-gray-700 stat-card">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
                     <div class="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center">
@@ -79,7 +79,7 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for category in category_tiles %}
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border dark:border-gray-700 stat-card">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md border dark:border-gray-700 stat-card">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 truncate-2-lines">{{ category.name }}</h3>
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {% if category.searches_today > 0 %}bg-green-800 text-gray-900{% else %}bg-gray-800{% endif %}">
@@ -116,10 +116,10 @@
                 </div>
                 
                 <div class="mt-4 flex space-x-2">
-                    <a href="/admin/searches/category/{{ category.id }}/change/" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-2 px-3 rounded text-sm font-medium transition-colors">
+                    <a href="/admin/searches/category/{{ category.id }}/change/" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors">
                         Manage
                     </a>
-                    <a href="{{ category.view_items_url }}" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white text-center py-2 px-3 rounded text-sm font-medium transition-colors">
+                    <a href="{{ category.view_items_url }}" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors">
                         View Items
                     </a>
                 </div>
@@ -132,12 +132,12 @@
     <div class="mb-8">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Latest Items (24h)</h2>
-            <a href="/admin/searches/item/?created__gte={{ yesterday }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition-colors">
+            <a href="/admin/searches/item/?created__gte={{ yesterday }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                 View All
             </a>
         </div>
         
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md border dark:border-gray-700 stat-card overflow-hidden table-container">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md border dark:border-gray-700 stat-card overflow-hidden table-container">
             {% if recent_items %}
             <div class="overflow-x-auto">
                 <table class="w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
@@ -191,7 +191,7 @@
             {% else %}
             <div class="p-8 text-center">
                 <p class="text-gray-500 dark:text-gray-400">No items found in the last 24 hours.</p>
-                <a href="/admin/searches/category/" class="mt-4 inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition-colors">
+                <a href="/admin/searches/category/" class="mt-4 inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                     Configure Categories
                 </a>
             </div>
@@ -202,14 +202,14 @@
     <!-- Chart Section -->
     <div class="mb-8">
         <h2 class="text-2xl font-bold text-white dark:text-white mb-6">Items Found Per Day (Last 14 Days)</h2>
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border dark:border-gray-700 chart-container">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md border dark:border-gray-700 chart-container">
             <canvas id="itemsChart"></canvas>
         </div>
     </div>
 
     <!-- Performance Metrics -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border dark:border-gray-700 stat-card">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md border dark:border-gray-700 stat-card">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Top Performing Categories</h3>
             {% if top_categories %}
                 <div class="space-y-3">
@@ -235,7 +235,7 @@
             {% endif %}
         </div>
 
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border dark:border-gray-700 stat-card">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md border dark:border-gray-700 stat-card">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">System Status</h3>
             <div class="space-y-3">
                 <div class="flex justify-between items-center">
@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div id="notification-area" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
 <!-- PWA Offline Indicator -->
-<div id="offline-indicator" class="fixed bottom-4 left-4 bg-yellow-500 text-white px-3 py-2 rounded-lg shadow-lg hidden">
+<div id="offline-indicator" class="fixed bottom-4 left-4 bg-yellow-500 text-white px-3 py-2 rounded-2xl shadow-lg hidden">
     📱 Working offline
 </div>
 {% endblock %}
