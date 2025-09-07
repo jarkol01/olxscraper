@@ -1,0 +1,410 @@
+/* OLX Scraper Dashboard Custom Styles */
+
+/* Mobile-first responsive improvements */
+@media (max-width: 768px) {
+    .max-w-7xl {
+        max-width: 100% !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+    
+    /* Make cards more touch-friendly */
+    .bg-white {
+        min-height: 80px;
+    }
+    
+    /* Improve button sizing for touch */
+    .btn {
+        min-height: 44px;
+        min-width: 44px;
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    /* Stack action buttons vertically on mobile */
+    .flex.space-x-2 {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .flex.space-x-2 > * {
+        margin-left: 0 !important;
+    }
+    
+    /* Make table responsive */
+    .overflow-x-auto {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    table {
+        font-size: 0.875rem;
+    }
+    
+    th, td {
+        padding: 0.5rem 0.75rem !important;
+    }
+    
+    .table-container {
+        margin: 0 -1rem;
+        border-radius: 0;
+    }
+    
+    .truncate {
+        max-width: none;
+    }
+    
+    a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    input, select, textarea {
+        font-size: 16px;
+        min-height: 44px;
+    }
+}
+
+/* PWA specific styles */
+@media (display-mode: standalone) {
+    /* Add padding for status bar on mobile PWA */
+    body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    /* Hide browser-specific elements in PWA mode */
+    .pwa-hidden {
+        display: none !important;
+    }
+}
+
+/* Dashboard specific animations */
+.category-tile {
+    transition: all 0.3s ease;
+}
+
+.category-tile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Status indicators */
+.status-online {
+    position: relative;
+}
+
+.status-online::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border: 2px solid white;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.loading {
+    position: relative;
+    color: transparent !important;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: #374151;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #6b7280;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    max-width: 400px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.notification.success {
+    border-left: 4px solid #10b981;
+}
+
+.notification.error {
+    border-left: 4px solid #ef4444;
+}
+
+.notification.warning {
+    border-left: 4px solid #f59e0b;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.chart-container {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    position: relative;
+    height: 400px;
+    width: 100%;
+    max-width: none;
+}
+
+@media (max-width: 768px) {
+    .chart-container {
+        height: 250px;
+    }
+}
+
+.dark .chart-container {
+    color: #f3f4f6;
+}
+
+.dark canvas {
+    filter: brightness(1.1);
+}
+
+/* Quick action cards */
+.quick-action {
+    transition: all 0.2s ease;
+}
+
+.quick-action:hover {
+    transform: scale(1.05);
+}
+
+.quick-action:active {
+    transform: scale(0.95);
+}
+
+.stat-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.btn:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+.dark .bg-green-800 {
+    background-color: #10b981 !important;
+}
+
+.dark .bg-purple-900 {
+    background-color: #8b5cf6 !important;
+}
+
+.bg-purple-100 {
+    background-color: #c6baff !important;
+}
+
+.dark .bg-blue-800 {
+    background-color: #3b82f6 !important;
+}
+
+.dark .bg-gray-800 {
+    background-color: #1f2937 !important;
+}
+
+.dark .border-gray-700 {
+    border-color: #374151 !important;
+}
+
+.dark .text-gray-900 {
+    color: #f9fafb !important;
+}
+
+.dark .text-white {
+    color: #f9fafb !important;
+}
+
+/* Fix any remaining dark mode text visibility issues */
+.dark .text-gray-100 {
+    color: #f3f4f6 !important;
+}
+
+/* Utility classes for dashboard */
+.truncate-2-lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Slick table separators */
+.slick-separator {
+    position: relative;
+    border-bottom: none !important;
+}
+
+.slick-separator::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(59, 130, 246, 0.1) 25%, 
+        rgba(59, 130, 246, 0.2) 50%, 
+        rgba(59, 130, 246, 0.1) 75%, 
+        transparent 100%);
+    transition: all 0.3s ease;
+}
+
+.dark .slick-separator::after {
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(96, 165, 250, 0.15) 25%, 
+        rgba(96, 165, 250, 0.25) 50%, 
+        rgba(96, 165, 250, 0.15) 75%, 
+        transparent 100%);
+}
+
+/* Enhanced hover effect for table rows */
+.slick-row {
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.slick-row:hover {
+    background: linear-gradient(90deg, 
+        rgba(59, 130, 246, 0.02) 0%, 
+        rgba(59, 130, 246, 0.05) 50%, 
+        rgba(59, 130, 246, 0.02) 100%) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.dark .slick-row:hover {
+    background: linear-gradient(90deg, 
+        rgba(96, 165, 250, 0.05) 0%, 
+        rgba(96, 165, 250, 0.1) 50%, 
+        rgba(96, 165, 250, 0.05) 100%) !important;
+    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.2);
+}
+
+.slick-row:hover .slick-separator::after {
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(59, 130, 246, 0.5) 10%, 
+        rgba(59, 130, 246, 0.8) 50%, 
+        rgba(59, 130, 246, 0.5) 90%, 
+        transparent 100%);
+    height: 2px;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+}
+
+.dark .slick-row:hover .slick-separator::after {
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(96, 165, 250, 0.6) 10%, 
+        rgba(96, 165, 250, 0.9) 50%, 
+        rgba(96, 165, 250, 0.6) 90%, 
+        transparent 100%);
+    box-shadow: 0 0 8px rgba(96, 165, 250, 0.4);
+}
+
+/* Subtle pulse animation for new items */
+@keyframes itemGlow {
+    0%, 100% {
+        box-shadow: 0 0 0 rgba(59, 130, 246, 0);
+    }
+    50% {
+        box-shadow: 0 0 12px rgba(59, 130, 246, 0.1);
+    }
+}
+
+.slick-row.new-item {
+    animation: itemGlow 3s ease-in-out;
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .print-break {
+        page-break-before: always;
+    }
+}

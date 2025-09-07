@@ -21,6 +21,11 @@ CSRF_TRUSTED_ORIGINS = []
 PROJECT_NAME = "olxscraper"
 
 BASE_APPS = [
+    "unfold",
+    "unfold.contrib.filters",
+    "unfold.contrib.forms",
+    "unfold.contrib.inlines",
+    "unfold.contrib.simple_history",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -230,3 +235,160 @@ PWA_APP_SHORTCUTS = [
         "description": "Access the administration panel",
     }
 ]
+
+UNFOLD = {
+    "SITE_TITLE": "OlxScraper Admin",
+    "SITE_HEADER": "OlxScraper",
+    "SITE_URL": "/",
+    "SITE_ICON": {
+        "light": "/static/images/logo.png",
+        "dark": "/static/images/logo.png",
+    },
+    "SITE_SYMBOL": "speed",
+    "SHOW_HISTORY": True,
+    "SHOW_VIEW_ON_SITE": True,
+    "ENVIRONMENT": "olxscraper.utils.environment.environment_callback",
+    "DASHBOARD_CALLBACK": "olxscraper.utils.dashboard.dashboard_callback",
+    "THEME": "dark",
+    "LOGIN": {
+        "image": "/static/images/logo.png",
+        "redirect_after": "/admin/",
+    },
+    "STYLES": [
+        lambda request: "/static/css/style.css",
+    ],
+    "SCRIPTS": [],
+    "COMMANDS": {
+        "search_models": True,
+    },
+    "COLORS": {
+        "primary": {
+            "50": "250 245 255",
+            "100": "243 232 255", 
+            "200": "233 213 255",
+            "300": "216 180 254",
+            "400": "196 181 253",
+            "500": "147 51 234",
+            "600": "124 58 237",
+            "700": "109 40 217",
+            "800": "91 33 182",
+            "900": "76 29 149",
+            "950": "46 16 101"
+        },
+    },
+    "SIDEBAR": {
+        "show_search": True,
+        "show_all_applications": True,
+        "navigation": [
+            {
+                "title": "Navigation",
+                "separator": True,
+                "items": [
+                    {
+                        "title": "Dashboard",
+                        "icon": "dashboard",  # Supported icon set: https://fonts.google.com/icons
+                        "link": "/admin/",
+                    },
+                    {
+                        "title": "Latest Items", 
+                        "icon": "new_releases",
+                        "link": "/admin/searches/item/?o=-4",
+                    },
+                    {
+                        "title": "Categories",
+                        "icon": "category", 
+                        "link": "/admin/searches/category/",
+                    },
+                ],
+            },
+            {
+                "title": "Search Management",
+                "separator": True,
+                "items": [
+                    {
+                        "title": "Categories",
+                        "icon": "category",
+                        "link": "/admin/searches/category/",
+                    },
+                    {
+                        "title": "Searches",
+                        "icon": "search",
+                        "link": "/admin/searches/search/",
+                    },
+                ],
+            },
+            {
+                "title": "Items & Results",
+                "separator": True, 
+                "items": [
+                    {
+                        "title": "Items",
+                        "icon": "inventory_2",
+                        "link": "/admin/searches/item/",
+                    },
+                    {
+                        "title": "Item Updates",
+                        "icon": "update",
+                        "link": "/admin/searches/itemupdate/",
+                    },
+                ],
+            },
+            {
+                "title": "System",
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": "Users",
+                        "icon": "people",
+                        "link": "/admin/auth/user/",
+                    },
+                    {
+                        "title": "Groups",
+                        "icon": "group",
+                        "link": "/admin/auth/group/",
+                    },
+                    {
+                        "title": "Periodic Tasks",
+                        "icon": "schedule",
+                        "link": "/admin/django_celery_beat/periodictask/",
+                    },
+                ],
+            },
+        ],
+    },
+    "TABS": [
+        {
+            "models": [
+                "searches.category",
+                "searches.search", 
+            ],
+            "items": [
+                {
+                    "title": "Categories",
+                    "link": "/admin/searches/category/",
+                },
+                {
+                    "title": "Searches",
+                    "link": "/admin/searches/search/",
+                },
+            ],
+        },
+        {
+            "models": [
+                "searches.item",
+                "searches.itemupdate",
+            ],
+            "items": [
+                {
+                    "title": "Items", 
+                    "link": "/admin/searches/item/",
+                },
+                {
+                    "title": "Updates",
+                    "link": "/admin/searches/itemupdate/",
+                },
+            ],
+        },
+    ],
+}
