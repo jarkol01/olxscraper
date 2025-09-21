@@ -21,6 +21,7 @@ from django.views.static import serve
 from django.conf import settings
 from django.conf.urls.static import static
 import os
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 from olxscraper.notifications.views import NotificationView
 
@@ -37,7 +38,8 @@ urlpatterns = [
             "path": "serviceworker.js",
         },
     ),
-]
+    path("__debug__/", include("debug_toolbar.urls")),
+] + debug_toolbar_urls()
 
 # Serve static files during development
 if settings.DEBUG:

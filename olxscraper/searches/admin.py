@@ -180,7 +180,6 @@ class ItemAdmin(ModelAdmin):
     list_display = ("title", "price_display", "category_link", "created", "view_item", "found_in_searches")
     list_filter = (
         "created",
-        "price",
         "currency",
         "searchresult__search__address__category",
         "searchresult__search__address__website",

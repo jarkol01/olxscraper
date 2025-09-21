@@ -1,7 +1,7 @@
 from .base import *  # noqa: F403
 
 # Add your domain here once you have one
-ALLOWED_HOSTS = ["34.116.254.111", "koldun.pl"]
+ALLOWED_HOSTS = ["koldun.pl"]
 
 MIDDLEWARE.insert(2, "whitenoise.middleware.WhiteNoiseMiddleware")  # noqa: F405
 
@@ -31,3 +31,6 @@ CSRF_TRUSTED_ORIGINS = [
     "https://koldun.pl",
     "https://www.koldun.pl",
 ]
+
+# Django Debug Toolbar for production (superusers only)
+INTERNAL_IPS = ["koldun.pl"]

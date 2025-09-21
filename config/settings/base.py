@@ -39,6 +39,7 @@ THIRD_PARTY_APPS = [
     "webpush",
     "django_celery_beat",
     "pwa",
+    "debug_toolbar",
 ]
 
 LOCAL_APPS = [
@@ -50,6 +51,7 @@ LOCAL_APPS = [f"{PROJECT_NAME}.{app}" for app in LOCAL_APPS]
 INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -235,6 +237,14 @@ PWA_APP_SHORTCUTS = [
         "description": "Access the administration panel",
     }
 ]
+
+def custom_show_toolbar(request):
+    return True
+
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
+}
 
 UNFOLD = {
     "SITE_TITLE": "OlxScraper Admin",

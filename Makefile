@@ -35,11 +35,11 @@ prod_push:
 	docker push jkoldun/olxscraper:latest
 
 prod_sync:
-	rsync -av deployment/prod.compose.yaml jarek@34.116.254.111:/home/jarek/compose.yml
-	rsync -av deployment/.env jarek@34.116.254.111:/home/jarek/.env
-	rsync -av deployment/Caddyfile jarek@34.116.254.111:/home/jarek/Caddyfile
+	rsync -av deployment/prod.compose.yaml jarek@koldun.pl:/home/jarek/compose.yml
+	rsync -av deployment/.env jarek@koldun.pl:/home/jarek/.env
+	rsync -av deployment/Caddyfile jarek@koldun.pl:/home/jarek/Caddyfile
 
 prod_restart:
-	ssh jarek@34.116.254.111 "docker compose up --pull always -d"
+	ssh jarek@koldun.pl "docker compose up --pull always -d"
 
 deploy: prod_build prod_tag prod_push prod_sync prod_restart

@@ -23,6 +23,7 @@ dependencies = [
     "aiohttp>=3.12.13",
     "httpx[http2]>=0.28.1",
     "django-unfold>=0.40.0",
+    "django-debug-toolbar>=6.0.0",
 ]
 
 [dependency-groups]
