@@ -25,9 +25,10 @@ def get_category_tiles(now, today):
     category_tiles = []
     
     for category in categories:
-        searches_today = Search.objects.filter(
-            address__category=category,
-            created__date=today
+        found_today = SearchResult.objects.filter(
+            search__address__category=category,
+            search__created__date=today,
+            was_found=True
         ).count()
         
         total_searches = Search.objects.filter(
@@ -73,7 +74,7 @@ def get_category_tiles(now, today):
         category_tiles.append({
             'id': category.id,
             'name': category.name,
-            'searches_today': searches_today,
+            'found_today': found_today,
             'total_searches': total_searches,
             'items_found': items_found,
             'hours_since_last': hours_since_last,
@@ -85,12 +86,8 @@ def get_category_tiles(now, today):
     return category_tiles
 
 
-def get_recent_items(now, yesterday):
-    recent_items_queryset = Item.objects.filter(
-        created__gte=yesterday
-    ).select_related().prefetch_related(
-        'searchresult_set__search__address__category'
-    ).order_by('-created')[:10]
+def get_recent_items(now):
+    recent_items_queryset = Item.objects.order_by('-created')[:10]
     
     recent_items = []
     for item in recent_items_queryset:
@@ -192,7 +189,7 @@ def dashboard_callback(request, context):
     context.update({
         'dashboard_stats': get_dashboard_stats(today, week_ago),
         'category_tiles': get_category_tiles(now, today),
-        'recent_items': get_recent_items(now, yesterday),
+        'recent_items': get_recent_items(now),
         'yesterday': yesterday.strftime('%Y-%m-%d'),
         'chart_data': get_chart_data(now),
         'top_categories': get_top_categories(week_ago),

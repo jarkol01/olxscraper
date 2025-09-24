@@ -47,11 +47,11 @@ class ItemUpdater:
         """
         Creates an update entry and overwrites the old item with the new item data.
         """
-        self._overwrite_item(old_item, new_item)
-
         changes = self._build_update_changes(old_item, new_item)
         if changes:
             self._create_update_entry(old_item, changes)
+
+        self._overwrite_item(old_item, new_item)
 
         return old_item
 
